@@ -1,6 +1,7 @@
 import re
 import traceback
-from typing import List
+from dataclasses import dataclass, field
+from typing import List, Dict
 
 import requests
 
@@ -155,8 +156,6 @@ class JiraActionPlugin(ActionPlugin):
                 components=ticket.components,
             )
         )
-        # if assignee:
-        #    data["fields"]["assignee"] = dict(name=assignee)
         print("Creating ticket for {} with summary '{}'".format(ticket.key, text))
         response = requests.post(f"{self._jira_base_url}/rest/api/2/issue/", json=data, auth=self._jira_auth)
         print(response.text, flush=True)
@@ -240,10 +239,10 @@ def _clean_task(task):
     return task.strip()
 
 
+@dataclass
 class JiraTicket:
-    def __init__(self, key, text, assignee, components):
-        self.key = key
-        self.text = text
-        self.assignee = assignee
-        self.components = components
-        self.subtasks = list()
+    key: str
+    text: str
+    assignee: str
+    components: List[Dict]
+    subtasks: List[str] = field(default_factory=list)

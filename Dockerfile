@@ -6,4 +6,4 @@ COPY opsbot /opsbot
 
 EXPOSE 5000
 
-CMD ["python" , "-m", "opsbot.__init__"]
+CMD ["python" , "-m", "opsbot.main"]

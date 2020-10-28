@@ -84,8 +84,8 @@ class TeamsBot(object):
         logger.info(response)
 
     def message_received(self):
-        logger.info(f"Received message: \n {request.get_json()}")
         """ handles incoming messages """
+        logger.info(f"Received message: \n {request.get_json()}")
         activity = Activity.deserialize(request.get_json())
         authorization = request.headers.get("Authorization")
 
