@@ -111,10 +111,10 @@ class JiraActionPlugin(ActionPlugin):
             self.save_variable("issues", issue_list)
             return True
         except Exception as ex:
-            self.logger.info(ex)
+            self.logger.exception("Error while checking JIRA")
             last_check = self.read_variable("last_check", 0)
             if now().timestamp() - last_check > 60 * 60:
-                self.report_error()
+                self.report_error(str(ex))
                 self.save_variable("last_check", now().timestamp())
         return True
 
@@ -135,10 +135,10 @@ class JiraActionPlugin(ActionPlugin):
                 f'Neuer Defect {issue["key"]} <a href="{self._jira_base_url}/browse/{issue["key"]}">{self._jira_base_url}/browse/{issue["key"]}</a> mit Priority "{issue["priority"]}" im Status "{issue["status"]}".\r\n',
                 channel_type=DEFECTS_CHANNEL_TYPE)
 
-    def report_error(self):
+    def report_error(self, reason):
         person_today = self.call_plugin_method("operations", "current", default='general')
         self.send_message(
-            f'<at>{person_today}</at> Ich konnte JIRA nicht prüfen. Bitte prüfe selbst ob es neue Defects gibt: <a href="{self._link_defects}">{self._link_defects}</a>',
+            f'<at>{person_today}</at> Ich konnte JIRA nicht prüfen. ({reason}). Bitte prüfe selbst ob es neue Defects gibt: <a href="{self._link_defects}">{self._link_defects}</a>',
             channel_type=DEFECTS_CHANNEL_TYPE, mentions=[person_today])
 
     def create_subtasks(self, ticket):
