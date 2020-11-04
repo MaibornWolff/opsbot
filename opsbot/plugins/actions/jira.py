@@ -120,14 +120,15 @@ class JiraActionPlugin(ActionPlugin):
 
     def check_filter(self):
         response = requests.get(f"{self._jira_base_url}/rest/api/2/filter/%s" % self._jira_filter_id, auth=self._jira_auth)
+        response.raise_for_status()
+
+        url = response.json()["searchUrl"]
+        response = requests.get(url, auth=self._jira_auth)
         if response.ok:
-            url = response.json()["searchUrl"]
-            response = requests.get(url, auth=self._jira_auth)
-            if response.ok:
-                issues = response.json()["issues"]
-                return [dict(key=i["key"], status=i.get("fields", dict()).get("status", dict()).get("name", "UNKNOWN"),
-                             priority=i.get("fields", dict()).get("priority", dict()).get("name", "UNKNOWN")) for i in issues]
-        raise Exception("Error handling request")
+            issues = response.json()["issues"]
+            return [dict(key=i["key"], status=i.get("fields", dict()).get("status", dict()).get("name", "UNKNOWN"),
+                         priority=i.get("fields", dict()).get("priority", dict()).get("name", "UNKNOWN")) for i in issues]
+
 
     def inform_about_defects(self, issues):
         for issue in issues:
