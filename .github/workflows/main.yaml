@@ -5,7 +5,7 @@ on:
       - 'v*'
 jobs:
   release:
-    name: Push Docker image to Docker Hub
+    name: Create new release
     runs-on: ubuntu-latest
     steps:
 
@@ -20,6 +20,17 @@ jobs:
           repository: maibornwolff/opsbot
           tag_with_ref: true
 
+      - name: Prepare helm chart
+        run: |
+          sed -i 's/0.0.1/'"${github.ref//v}"'/' deploy/helm/opsbot/Chart.yaml
+          sed -i 's/v0.0.1/'"${github.ref}"'/' deploy/helm/opsbot/values.yaml
+
+      - name: Publish helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          charts_dir: deploy/helm
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -30,3 +41,4 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
