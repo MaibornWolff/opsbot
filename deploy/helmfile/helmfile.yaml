@@ -1,11 +1,13 @@
 
 repositories:
-  - name: opsbot
-    url: git+https://github.com/MaibornWolff/opsbot@deploy/helm?ref=v1.0.0&sparse=0
+  - name: maibornwolff
+    url: https://MaibornWolff.github.io/opsbot
 
 releases:
+
   - name: opsbot
-    chart: opsbot/opsbot
+    chart: maibornwolff/opsbot
+    version: 0.0.1
     namespace: some-namespace
     tillerNamespace: some-namespace
 
