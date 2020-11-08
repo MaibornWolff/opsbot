@@ -1,7 +1,7 @@
 
 repositories:
   - name: opsbot
-    url: git+https://github.com/MaibornWolff/opsbot@deploy/helm
+    url: git+https://github.com/MaibornWolff/opsbot@deploy/helm?ref=v1.0.0&sparse=0
 
 releases:
   - name: opsbot
