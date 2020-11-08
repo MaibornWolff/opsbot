@@ -1,14 +1,17 @@
 name: Publish Docker image
-on: push
-#  release:
-#    types: [published]
+on:
+  push:
+    tags:
+      - 'v*'
 jobs:
-  push_to_registry:
+  release:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
+
       - name: Check out the repo
         uses: actions/checkout@v2
+
       - name: Push to Docker Hub
         uses: docker/build-push-action@v1
         with:
@@ -16,3 +19,14 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: maibornwolff/opsbot
           tag_with_ref: true
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: false

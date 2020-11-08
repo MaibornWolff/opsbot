@@ -113,7 +113,7 @@ class JiraActionPlugin(ActionPlugin):
         except Exception as ex:
             self.logger.exception("Error while checking JIRA")
             last_check = self.read_variable("last_check", 0)
-            if now().timestamp() - last_check > 60 * 60:
+            if now().timestamp() - last_check >= 60 * 60:
                 self.report_error(str(ex))
                 self.save_variable("last_check", now().timestamp())
         return True
@@ -128,7 +128,6 @@ class JiraActionPlugin(ActionPlugin):
             issues = response.json()["issues"]
             return [dict(key=i["key"], status=i.get("fields", dict()).get("status", dict()).get("name", "UNKNOWN"),
                          priority=i.get("fields", dict()).get("priority", dict()).get("name", "UNKNOWN")) for i in issues]
-
 
     def inform_about_defects(self, issues):
         for issue in issues:
