@@ -24,8 +24,8 @@ jobs:
         env:
           GITHUB_REF: ${{ github.ref }}
         run: |
-          sed -i 's/0.0.1/'"${GITHUB_REF//v}"'/' deploy/helm/opsbot/Chart.yaml
-          sed -i 's/v0.0.1/'"${GITHUB_REF}"'/' deploy/helm/opsbot/values.yaml
+          sed -i 's/0.0.1/'"${GITHUB_REF//refs\/tags\/v}"'/' deploy/helm/opsbot/Chart.yaml
+          sed -i 's/v0.0.1/'"${GITHUB_REF//refs\/tags\/}"'/' deploy/helm/opsbot/values.yaml
 
       - name: Publish helm chart
         uses: stefanprodan/helm-gh-pages@master
