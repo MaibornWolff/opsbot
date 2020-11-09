@@ -39,14 +39,18 @@ You can use this one or build your own from this repository. In any case you hav
 
 #### Kubernetes
 
-For kubernetes deployment a helm template is included in `deploy/helm/opsbot`.
+For kubernetes deployment a helm template is included in the project under `deploy/helm/opsbot`
+ and hosted as helm repository `https://maibornwolff.github.io/opsbot/` via github pages.
 
-To simplify the deployment even more there is also a predefined helmfile (deploy/helm/opsbot) available.
+You can install this chart with
+
+    $ helm repo add maibornwolff-opsbot https://MaibornWolff.github.io/opsbot
+    $ helm install my-release maibornwolff-opsbot/opsbot --values my-values.yaml
+
+To further simplify the deployment even more there is also a predefined helmfile (deploy/helm/opsbot) available.
 You can configure the deployment of the backend service and also provide the Opsbot configuration in one file.
 It is also possible to add custom plugins which will get deployed in a configmap and added to the Opsbot container.
 
-To use the helmfile you need helm with the [helm-git](https://github.com/aslafy-z/helm-git) plugin and [helm-diff](https://github.com/databus23/helm-diff) plugins installed.
- 
 ## Configuration
 
 The Bot is configured with a Yaml file. The path Opsbot looks for this file defaults to `./opsbot_config.yaml` but can be overwritten by setting the environment variable `OPSBOT_CONFIG_FILE`.
