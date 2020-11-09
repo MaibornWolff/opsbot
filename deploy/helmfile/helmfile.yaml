@@ -7,7 +7,7 @@ releases:
 
   - name: opsbot
     chart: maibornwolff-opsbot/opsbot
-    version: 1.0.0
+    # version: 1.0.0 # Specify specific chart version
     namespace: some-namespace
     tillerNamespace: some-namespace
 
