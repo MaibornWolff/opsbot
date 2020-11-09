@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  opsbot:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-11-09T16:12:50.668217392Z"
+    description: A Helm chart for Kubernetes
+    digest: 9dacbd4a4bf05554427e477dee936a5b1ada5f6cb0134cb78a615e07ac020610
+    name: opsbot
+    urls:
+    - https://MaibornWolff.github.io/opsbot/opsbot-1.0.0.tgz
+    version: 1.0.0
+generated: "2020-11-09T16:12:50.667008077Z"
