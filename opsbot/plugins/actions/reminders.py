@@ -68,7 +68,7 @@ class RemindersActionPlugin(ActionPlugin):
         self.add_scheduled_job(self._remind_events, 'cron', id='remind_events', day_of_week='mon-fri', hour=8, minute=0)
 
         # For debugging:
-        # self.add_scheduled_job(self._remind_events, 'cron', id='debug', day_of_week='*', hour='*', minute='*')
+        self.add_scheduled_job(self._remind_events, 'cron', id='debug', day_of_week='*', hour='*', minute='*')
         
         self._latest_reminder_run = _parse_date(
             self.read_variable("latest_reminder_run", default=str(today_date())),
@@ -95,9 +95,9 @@ class RemindersActionPlugin(ActionPlugin):
             notification_dates = [
                 _calculate_reminder_date(event_date, datestring) for datestring in notifications
             ]
-
-            # Always notify for events today
-            notification_dates.append(today_date())
+            
+            # Always notify when the event is today
+            notification_dates.append(event_date)
 
             # Check each event for necessary notifications
             for date in dates_to_check:
