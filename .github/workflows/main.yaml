@@ -1,4 +1,4 @@
-name: Publish Docker image
+name: Publish new release
 on:
   push:
     tags:
@@ -10,22 +10,30 @@ jobs:
     steps:
 
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v1
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: maibornwolff/opsbot
-          tag_with_ref: true
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image to GitHub Container Registry
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/opsbot
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          TAG=${GITHUB_REF//refs\/tags\/v}
+          docker build . -t $IMAGE_ID:$TAG --push
 
       - name: Prepare helm chart
         env:
           GITHUB_REF: ${{ github.ref }}
         run: |
           sed -i 's/0.0.1/'"${GITHUB_REF//refs\/tags\/v}"'/' deploy/helm/opsbot/Chart.yaml
-          sed -i 's/v0.0.1/'"${GITHUB_REF//refs\/tags\/}"'/' deploy/helm/opsbot/values.yaml
+          sed -i 's/0.0.1/'"${GITHUB_REF//refs\/tags\/v}"'/' deploy/helm/opsbot/values.yaml
 
       - name: Publish helm chart
         uses: stefanprodan/helm-gh-pages@master
@@ -34,7 +42,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
-        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -43,4 +50,3 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-

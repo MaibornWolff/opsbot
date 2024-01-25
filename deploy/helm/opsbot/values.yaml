@@ -2,8 +2,8 @@
 replicaCount: 1
 
 image:
-  repository: maibornwolff/opsbot
-  tag: v0.0.1
+  repository: ghcr.io/maibornwolff/opsbot
+  tag: 0.0.1
   pullPolicy: IfNotPresent
 
 nameOverride: ""

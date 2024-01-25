@@ -1,5 +1,8 @@
-apiVersion: v1
-appVersion: "1.0"
-description: A Microsoft Team bot that helps organize operational tasks
+apiVersion: v2
 name: opsbot
+description: A Microsoft Teams bot that helps organize operational tasks
+type: application
 version: 0.0.1
+appVersion: "0.0.1"
+sources:
+  - https://github.com/MaibornWolff/opsbot
