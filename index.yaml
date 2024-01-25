@@ -1,6 +1,18 @@
 apiVersion: v1
 entries:
   opsbot:
+  - apiVersion: v2
+    appVersion: 1.2.2
+    created: "2024-01-25T10:46:10.760610064Z"
+    description: A Microsoft Teams bot that helps organize operational tasks
+    digest: 30452db8b3211ad6f3c13482c1cd441731ca4b4e5770fd23e1f248cb831de158
+    name: opsbot
+    sources:
+    - https://github.com/MaibornWolff/opsbot
+    type: application
+    urls:
+    - https://MaibornWolff.github.io/opsbot/opsbot-1.2.2.tgz
+    version: 1.2.2
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-08-30T06:20:40.694454964Z"
@@ -46,4 +58,4 @@ entries:
     urls:
     - https://MaibornWolff.github.io/opsbot/opsbot-1.0.0.tgz
     version: 1.0.0
-generated: "2023-08-30T06:20:40.693752659Z"
+generated: "2024-01-25T10:46:10.760107742Z"
